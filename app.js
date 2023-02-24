@@ -81,6 +81,24 @@ function addTask(e) {
     else if(e.target.classList.contains('delete-item')){
         e.target.parentElement.parentElement.parentElement.parentElement.remove();
     }
+
+    // Show the Task In Detail in a new Modal
+    else if(e.target.classList.contains('task-card') || e.target.classList.contains('task-card-inner') || e.target.classList.contains('card-task-text')){
+        const UItxtModal = document.querySelector('.txt-modall');
+        const UIheading = document.querySelector('.heading');
+        const UIxTaskDetail = document.querySelector('#xtask-detail');
+        UItxtModal.classList.remove('d-none');
+
+        if (e.target.classList.contains('card-task-text')) {
+            
+            UIheading.innerHTML = e.target.parentElement.children[1].innerHTML
+            UIxTaskDetail.value = e.target.innerText;
+        } 
+    }
+
+    // Edit Task
+    e.preventDefault();
+
 }
     
 
