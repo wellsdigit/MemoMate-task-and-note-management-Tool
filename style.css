@@ -1,0 +1,238 @@
+:root {
+    --primary: #00B8A9;
+    --secondary: #FFDE7D;
+    --tertiary: #F8F3D4;
+    --except: #F6416C;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--tertiary);
+    height: 100vh;
+}
+
+.heading{
+    font-weight: 600;
+    top: -40px;
+    left: 14%;
+    border-radius: 25px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2), inset -5px 1px 5px rgba(0, 0, 0, 0.2);
+    background-color: var(--tertiary);
+}
+
+.form{
+    background: linear-gradient(to right bottom, var(--primary), var(--secondary));
+}
+
+.form-input input:first-child {
+    font-family: 'Montserrat', sans-serif;
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    border-bottom: 1px solid var(--tertiary);
+    color: var(--tertiary);
+    width: 100%;
+}
+
+.form-input input:focus, .form-input textarea:focus{
+    outline: none;
+}
+
+.form-input span{
+    color: var(--tertiary);
+}
+
+.form-input textarea{
+    border: none;
+    resize: none;
+    height: 200px;
+    padding: 10px;
+    transition: 0.3;
+}
+
+.form-input textarea::-webkit-scrollbar{
+    /* display: flex; */
+    background-color: white;
+    width: 8px;
+    
+}
+
+.form-input textarea::-webkit-scrollbar-thumb{
+    display: block;
+    /* width: 20px !important; */
+    border-radius: 10px;
+    background: var(--secondary);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+}
+
+
+.form-input textarea:focus{
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+}
+
+/* font-family: 'Montez', cursive; */
+
+.btn-primary{
+    background: var(--primary);
+    border-color: #00B8A9;
+    transition: .3s;
+}
+
+.btn-primary:hover{
+    background: linear-gradient(to right bottom, var(--secondary), var(--primary));
+    border-color: var(--primary);
+    transition: .3s;
+    box-shadow: 0 0 15px rgba(0,0,0,.3);
+}
+
+.modall, .txt-modall{
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: all .4s;
+}
+
+.d-none{
+    transition: all .4s;
+}
+
+#close{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+#close span{
+    display: inline-block;
+    width: 2px;
+    height: 30px;
+    background-color: var(--tertiary);
+}
+
+#close span:first-child{
+    transform: rotate(45deg);
+}
+#close span:last-child{
+    transform: rotate(-45deg);
+}
+
+.card{
+    height: 150px;
+    background-color: transparent;
+}
+.card:first-child{
+    background-color: white;
+}
+
+.task-card{
+    transform-style: preserve-3d;
+    transition: .4s;
+    background-color: #fff;
+    border-radius: 6px;
+    perspective: 130px;
+}
+
+.task-card:hover{
+    transform: rotateY(180deg);
+    background: linear-gradient(to right bottom, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.task-card-inner:hover{
+    transform: rotateY(360deg);
+}
+
+.task-card:hover .delete-item{
+    display: block;
+    transform: rotateX(-180deg);
+    text-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+.task-card:hover .fa-feather{
+    display: none;
+}
+
+.task-card-inner:hover .card-task-text{
+    transform: rotateY(-180deg);
+    text-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+
+}
+
+.task-card:hover .card-task-text, .ts-title:hover{
+    display: -webkit-box;
+    transform: rotateY(-180deg);
+}
+
+.task-card:hover .ts-title, .ts-title:hover{
+    display: none;
+}
+
+.add-btn{
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.row{
+    gap: 25px;
+}
+
+.task-card-inner{
+    /* position: relative; */
+    /* transform: rotateY(180deg); */
+    transform-style: preserve-3d;
+    perspective: 12px;
+    cursor: pointer;
+    /* backface-visibility: hidden; */
+    /* overflow: hidden; */
+}
+
+.t-beauty{
+    display: flex;
+    width: 40px;
+    top: -10px;
+    background: linear-gradient(to right bottom, var(--primary), var(--secondary));
+    padding: 5px 10px;
+    border-radius: 25px;
+    color: white;
+    overflow: hidden;
+    /* backface-visibility: hidden; */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.ts-title{
+    backface-visibility: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.card-task-text{
+    display: none;
+    /* display: -webkit-box; */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    height: 80%;
+    text-overflow: ellipsis;
+}
+
+.t-beauty .delete-item{
+    display: none;
+}
