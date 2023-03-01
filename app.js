@@ -15,6 +15,9 @@ loadEventListeners();
 
 // Events 
 function loadEventListeners() {
+    // DOM Load Event
+    document.addEventListener('DOMContentLoaded', getTask);
+
     // Add Task Ui Unveil Event
     UIaddTaskBtn.addEventListener('click', addTaskUnveil);
 
@@ -26,22 +29,23 @@ function loadEventListeners() {
     
 }
 
-// Show Add Task UI
-function addTaskUnveil () {
-    addUi.classList.remove('d-none');
-}
+// Get Task 
+function getTask () {
+    let tasksTitle, tasksDesc;
+    if(localStorage.getItem('tasksTitle') === null){
+        tasksTitle = [];
+    } else {
+        tasksTitle = JSON.parse(localStorage.getItem('tasksTitle'));
+        // tasksDesc = JSON.parse(localStorage.getItem('tasksDesc'));
+    }
 
-// Close Add Task UI
-function modalClose(e) {
-    e.target.parentElement.parentElement.classList.add('d-none');
-    console.log('close modal');
-}
+    if (localStorage.getItem('tasksDesc') === null){
+        tasksDesc = [];
+    } else {
+        tasksDesc = JSON.parse(localStorage.getItem('tasksDesc'));
+    }
 
-// DELEGATING on BODY UI
-function addTask(e) {
-    // Add Task to the UI
-
-    if(e.target.classList.contains('add-task-btn')){
+    tasksTitle.forEach((taskT)=>{
         const card = document.createElement('div');
         card.className = 'card t-card col-12 col-md-6 col-lg3 col-xl-2 border-0 p-0';
         const taskCard = document.createElement('div');
@@ -54,32 +58,86 @@ function addTask(e) {
         tBeauty.innerHTML ='<i class="fa fa-feather"></i> <i class="fa fa-remove delete-item fs-5"></i>';
         const taskTitle = document.createElement('h5');
         taskTitle.className = 'ts-title';
-        taskTitle.innerText = UITitleInput.value;
+        taskTitle.innerText = taskT;
         taskInner.appendChild(taskTitle);
         const taskDescription = document.createElement('p');
         taskDescription.className = 'card-task-text text-center w-100 p-3';
-        taskDescription.innerText = UItaskDetails.value;
+        
+        tasksDesc.forEach((desc) => {
+            taskDescription.innerText = desc;
+        })
         taskInner.appendChild(taskDescription);
         taskCard.appendChild(taskInner);
         card.appendChild(taskCard);
         UIcardContainer.appendChild(card);
-        addUi.classList.add('d-none');
-        UItaskDetails.value = '';
-        UITitleInput.value = '';
+    });
 
-        
-        e.preventDefault();
+}
+
+// Show Add Task UI
+function addTaskUnveil () {
+    addUi.classList.remove('d-none');
+}
+
+// Close Add Task UI
+function modalClose(e) {
+    e.target.parentElement.parentElement.classList.add('d-none');
+}
+
+// DELEGATING on BODY UI
+function addTask(e) {
+    // Add Task to the UI
+    e.preventDefault();
+
+    if(e.target.classList.contains('add-task-btn')){
+        if(UITitleInput.value != '' && UItaskDetails.value != ''){
+            const card = document.createElement('div');
+            card.className = 'card t-card col-12 col-md-6 col-lg3 col-xl-2 border-0 p-0';
+            const taskCard = document.createElement('div');
+            taskCard.className = 'task-card  align-items-center justify-content-center h-100';
+            const taskInner = document.createElement('div');
+            taskInner.className = 'task-card-inner d-flex align-items-center justify-content-center flex-column h-100 p-1 position-relative';
+            const tBeauty = document.createElement('div');
+            tBeauty.className = 't-beauty position-absolute';
+            taskInner.appendChild(tBeauty);
+            tBeauty.innerHTML ='<i class="fa fa-feather"></i> <i class="fa fa-remove delete-item fs-5"></i>';
+            const taskTitle = document.createElement('h5');
+            taskTitle.className = 'ts-title';
+            taskTitle.innerText = UITitleInput.value;
+            taskInner.appendChild(taskTitle);
+            const taskDescription = document.createElement('p');
+            taskDescription.className = 'card-task-text text-center w-100 p-3';
+            taskDescription.innerText = UItaskDetails.value;
+            taskInner.appendChild(taskDescription);
+            taskCard.appendChild(taskInner);
+            card.appendChild(taskCard);
+            UIcardContainer.appendChild(card);
+            addUi.classList.add('d-none');
+    
+            // Store In Local Storage
+            storeTaskInLocalStorage(UITitleInput.value, UItaskDetails.value);
+    
+            UItaskDetails.value = '';
+            UITitleInput.value = '';
+        } else {
+            alert('Please do not leave the fields blank!');
+        }
     } 
 
     // Close The Task Input UI
     else if (e.target.classList.contains('mod-close')){
         e.target.parentElement.parentElement.classList.add('d-none');
-        console.log('close modal');
     }
 
     // Remove Task Form UI
     else if(e.target.classList.contains('delete-item')){
-        e.target.parentElement.parentElement.parentElement.parentElement.remove();
+
+        if(confirm('Are you sure?')){
+            e.target.parentElement.parentElement.parentElement.parentElement.remove();
+            
+            // Remove Task Form LS
+            removeTaskFromLS(e.target.parentElement.parentElement.parentElement.parentElement);
+        }
     }
 
     // Show the Task In Detail in a new Modal
@@ -97,10 +155,61 @@ function addTask(e) {
     }
 
     // Edit Task
+    
     e.preventDefault();
 
 }
     
 
-//     e.preventDefault();
-// }
+// Store in Loacal Storage
+function storeTaskInLocalStorage(taskTitle, taskDesc){
+    let tasksTitle, tasksDesc;
+    if(localStorage.getItem('tasksTitle') === null){
+        tasksTitle = [];
+    } else {
+        tasksTitle = JSON.parse(localStorage.getItem('tasksTitle'));
+    }
+
+    if (localStorage.getItem('tasksDesc') === null){
+        tasksDesc = [];
+    } else {
+        tasksDesc = JSON.parse(localStorage.getItem('tasksDesc'));
+    }
+
+    tasksTitle.push(taskTitle);
+    tasksDesc.push(taskDesc);
+
+    localStorage.setItem('tasksTitle', JSON.stringify(tasksTitle));
+    localStorage.setItem('tasksDesc', JSON.stringify(tasksDesc));
+}
+
+// Remove tasks from LocalStorage
+function removeTaskFromLS (taskItem) {
+    let tasksTitle, tasksDesc;
+    if(localStorage.getItem('tasksTitle') === null){
+        tasksTitle = [];
+    } else {
+        tasksTitle = JSON.parse(localStorage.getItem('tasksTitle'));
+    }
+
+    if (localStorage.getItem('tasksDesc') === null){
+        tasksDesc = [];
+    } else {
+        tasksDesc = JSON.parse(localStorage.getItem('tasksDesc'));
+    }
+
+    tasksTitle.forEach((title, index) => {
+        if (taskItem.children[0].children[0].children[1].textContent === title){
+            tasksTitle.splice(index, 1);
+        }
+    });
+    tasksDesc.forEach((descr, index)=>{
+        if (taskItem.children[0].children[0].children[2].textContent === descr){
+            tasksDesc.splice(index, 1);
+        }
+    })
+
+    localStorage.setItem('tasksTitle', JSON.stringify(tasksTitle));
+    localStorage.setItem('tasksDesc', JSON.stringify(tasksDesc));
+
+}
